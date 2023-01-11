@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import Profile from "./component/Profile";
+import Welcome from "./component/Welcome";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userlists = [
+    { username: "andy", password: "asd" },
+    { username: "jamie", password: "asd" },
+    { username: "muugii", password: "asd" },
+    { username: "orgil", password: "shibata" },
+  ];
+
+  function loginHandler(userName, password) {
+    let found = false;
+    userlists.forEach((userlist) => {
+      if (userName === userlist.username && password === userlist.password) {
+        found = true;
+      }
+    });
+    if (found == true) {
+      setIsLoggedIn(true);
+    } else {
+      console.error("Wrong password or username");
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="App">
+        {isLoggedIn ? (
+          <Profile setLogout={setIsLoggedIn} />
+        ) : (
+          <Welcome setLogin={loginHandler} />
+        )}
+      </div>
     </div>
   );
 }
